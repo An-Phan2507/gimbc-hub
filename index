@@ -1,1 +1,14 @@
-  <a href="test.html">Neuron Explorer</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta character="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><!-- neuron amination --></title>
+</head>
+<body>
+  <h1><!-- Neuron Construct --></h1>
+    <p><!-- This site simulates neuron action. --></p>
+    <p><!-- This site is provided for GIMBC's students. --<>/p>
+  <h2><!-- Interactive tools --></h2>
+  <ul>
+    <li><! 
