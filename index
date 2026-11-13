@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><!-- Neuron Animation --></title>
+  <title>Neuron Animation</title>
 </head>
 <body>
-  <h1><!--Neuron Construct--></h1>
-    <p><!--This site simulates neuron action.--></p>
-    <p><!--This site is provided for GIMBC's students.--></p>
-  <h2><!--Interactive tools--></h2>
-  <ul>
-    <li><!--test.html--></li>
-  </ul>
-<p><!-- <a href="trial_version.html">Neuron Explorer</a>
+  <h1>Neuron Explorer</h1>
+    <p>This site simulates how neurons work.</p>
+    <p>This site is for GIMBC's students.</p>
+  <h2>Interactive tools</h2>
+  <ul>  
+<li><a href="trial_version.html">Neuron Explorer</a>: click each part of a neuron to see what it does.</li>
 
+</ul>
+<p>Study notes based on the Neural Transmission &amp; Metabolism lectures at GIMBC, TMU. This site is only for GIMBC student</p>
 </body>
 </html>
