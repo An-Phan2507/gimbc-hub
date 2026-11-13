@@ -1,0 +1,402 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Chemical Synapse Step by Step</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: diagram on the left, step explanation on the right; stacks on phones. Ion colours are fixed meanings, used identically in diagram, legend and text. */
+:root {
+  --bg: #f1f4f3; --surface: #ffffff; --ink: #16202a; --muted: #56636d; --line: #cdd7d5;
+  --accent: #1d5d8a; --accent-ink: #ffffff;
+  --pre: #d9e7f4; --pre-edge: #7fa3c4; --post: #e6def4; --post-edge: #9b88c4;
+  --astro: #e2edd6; --astro-edge: #8fae74; --cleft: #f8f5ec;
+  --ap: #e9b512; --ca: #d9821a; --na: #1b89ad; --glu: #c0326f; --mg: #6f7c88; --dser: #7348c9; --gln: #2f9a7a; --h: #b5a23a;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1416; --surface: #151d20; --ink: #e5ecea; --muted: #9aa8a7; --line: #2a3639;
+  --accent: #6fb2de; --accent-ink: #0e1416;
+  --pre: #1b2c3d; --pre-edge: #4f7598; --post: #29223d; --post-edge: #7663a6;
+  --astro: #1e2b1c; --astro-edge: #5d7f45; --cleft: #191c19;
+  --ap: #f3cf4a; --ca: #f2a23c; --na: #3cb7dc; --glu: #ef5f9f; --mg: #a2adb8; --dser: #a888f2; --gln: #4cc39e; --h: #d6c35a;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e1416; --surface: #151d20; --ink: #e5ecea; --muted: #9aa8a7; --line: #2a3639;
+  --accent: #6fb2de; --accent-ink: #0e1416;
+  --pre: #1b2c3d; --pre-edge: #4f7598; --post: #29223d; --post-edge: #7663a6;
+  --astro: #1e2b1c; --astro-edge: #5d7f45; --cleft: #191c19;
+  --ap: #f3cf4a; --ca: #f2a23c; --na: #3cb7dc; --glu: #ef5f9f; --mg: #a2adb8; --dser: #a888f2; --gln: #4cc39e; --h: #d6c35a;
+  color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 22px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header h1 { font-family: var(--font-display); font-size: clamp(1.5rem, 3.4vw, 2.1rem); line-height: 1.15; margin: 0 0 6px; text-wrap: balance; letter-spacing: -0.01em; }
+header p { margin: 0; color: var(--muted); max-width: 70ch; }
+.chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 12px 0 18px; font-family: var(--font-mono); font-size: 12.5px; }
+.chain span.k { padding: 3px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+.chain span.ar { color: var(--muted); }
+
+.grid { display: grid; gap: 20px; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); align-items: start; }
+@media (max-width: 880px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+.stage { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+.stage svg { display: block; width: 100%; height: auto; max-width: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 8px 6px 2px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+
+.panel { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: inherit; cursor: pointer; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 7px 13px; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+.pills { display: flex; gap: 5px; flex-wrap: wrap; }
+.pills button { width: 34px; height: 34px; padding: 0; font-family: var(--font-mono); font-size: 13px; }
+.pills button[aria-current="step"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.card h2 { font-family: var(--font-display); font-size: 1.35rem; line-height: 1.2; margin: 6px 0 8px; text-wrap: balance; }
+.card p { margin: 0 0 8px; max-width: 65ch; }
+.why { border-left: 3px solid var(--accent); padding: 2px 0 2px 10px; color: var(--ink); }
+.why b { font-family: var(--font-display); }
+.ion { font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+.c-ca { color: var(--ca); } .c-na { color: var(--na); } .c-glu { color: var(--glu); } .c-mg { color: var(--mg); } .c-dser { color: var(--dser); } .c-gln { color: var(--gln); }
+
+.terms h3 { font-family: var(--font-display); font-size: 1rem; margin: 0 0 8px; }
+details { border-top: 1px solid var(--line); padding: 8px 0; }
+details:last-child { border-bottom: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-family: var(--font-mono); color: var(--muted); }
+details[open] summary::after { content: "−"; }
+details p { margin: 6px 0 0; color: var(--muted); max-width: 65ch; }
+
+.meter-note { font-size: 12.5px; color: var(--muted); }
+footer { margin-top: 22px; font-size: 13px; color: var(--muted); max-width: 80ch; }
+
+svg text { font-family: var(--font-body); fill: var(--ink); }
+svg .lbl { font-size: 13px; font-weight: 600; }
+svg .sm { font-size: 11px; fill: var(--muted); }
+svg .mono { font-family: var(--font-mono); font-size: 11px; }
+.gate { fill: var(--ink); opacity: .75; transition: opacity .4s; }
+svg.ca-open .gate { opacity: 0; }
+.chan { fill: var(--pre-edge); }
+.rec { fill: var(--post-edge); transition: fill .4s; }
+svg.ampa-open .ampa { fill: var(--na); }
+svg.nmda-open .nmda { fill: var(--ca); }
+.rgate { fill: var(--ink); opacity: .7; transition: opacity .4s; }
+svg.ampa-open .ampa-gate { opacity: 0; }
+svg.nmda-open .nmda-gate { opacity: 0; }
+#mg { fill: var(--mg); transition: opacity .6s, transform .8s; }
+svg.mg-out #mg { opacity: 0; transform: translateY(-26px); }
+#vesDock { transition: opacity .6s; }
+svg.fused #vesDock { opacity: .25; }
+#ap { fill: var(--ap); opacity: 0; }
+.eaat { fill: var(--astro-edge); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Chemical Synapse Step by Step</h1>
+    <p>Follow one signal across a glutamate synapse: electrical in the presynaptic neuron, chemical across the cleft, electrical again in the next cell, with the astrocyte cleaning up. Built from Lectures 4–9 of Neural Transmission &amp; Metabolism.</p>
+    <div class="chain" aria-label="Summary of the chain">
+      <span class="k">electrical</span><span class="ar">→</span><span class="k">Ca²⁺ signal</span><span class="ar">→</span><span class="k">chemical (glutamate)</span><span class="ar">→</span><span class="k">electrical (EPSP)</span><span class="ar">→</span><span class="k">clean-up</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="stage">
+      <svg id="syn" viewBox="0 0 600 520" role="img" aria-labelledby="svgTitle">
+        <title id="svgTitle">Diagram of a glutamate synapse: presynaptic terminal at the top, cleft in the middle, postsynaptic spine below, astrocyte process on the right</title>
+        <defs>
+          <clipPath id="axonClip"><path d="M255,0 L255,60 C255,90 120,100 120,170 L120,250 L480,250 L480,170 C480,100 345,90 345,60 L345,0 Z"/></clipPath>
+        </defs>
+        <!-- cleft band -->
+        <rect x="120" y="250" width="380" height="40" fill="var(--cleft)"/>
+        <!-- presynaptic terminal -->
+        <path d="M255,0 L255,60 C255,90 120,100 120,170 L120,250 L480,250 L480,170 C480,100 345,90 345,60 L345,0 Z" fill="var(--pre)" stroke="var(--pre-edge)" stroke-width="2"/>
+        <g clip-path="url(#axonClip)"><rect id="ap" x="100" y="-60" width="400" height="46" rx="20"/></g>
+        <!-- postsynaptic spine -->
+        <path d="M120,290 L480,290 L480,360 C480,420 360,430 345,470 L345,520 L255,520 L255,470 C240,430 120,420 120,360 Z" fill="var(--post)" stroke="var(--post-edge)" stroke-width="2"/>
+        <!-- astrocyte process -->
+        <path d="M600,110 C525,118 498,195 500,240 L500,305 C502,350 525,410 600,420 Z" fill="var(--astro)" stroke="var(--astro-edge)" stroke-width="2"/>
+        <rect class="eaat" x="496" y="262" width="10" height="16" rx="2"/>
+        <text class="sm" x="512" y="286">EAAT</text>
+
+        <!-- labels -->
+        <text class="lbl" x="362" y="28">Axon</text>
+        <text class="lbl" x="134" y="128">Presynaptic</text><text class="lbl" x="134" y="144">terminal</text>
+        <text class="sm" x="14" y="268">Synaptic</text><text class="sm" x="14" y="281">cleft (~20 nm)</text>
+        <text class="lbl" x="136" y="392">Postsynaptic</text><text class="lbl" x="136" y="408">spine</text>
+        <text class="lbl" x="526" y="160">Astro-</text><text class="lbl" x="526" y="176">cyte</text>
+        <text class="sm" x="232" y="270">active zone</text>
+
+        <!-- voltage-gated Ca2+ channels (two) -->
+        <g id="chL"><rect class="chan" x="160" y="242" width="6" height="16" rx="2"/><rect class="chan" x="174" y="242" width="6" height="16" rx="2"/><rect class="gate" x="166" y="244" width="8" height="12"/></g>
+        <g id="chR"><rect class="chan" x="420" y="242" width="6" height="16" rx="2"/><rect class="chan" x="434" y="242" width="6" height="16" rx="2"/><rect class="gate" x="426" y="244" width="8" height="12"/></g>
+        <text class="sm" x="140" y="236">Ca²⁺ channel</text>
+
+        <!-- vesicle pool -->
+        <g id="pool" fill="none" stroke="var(--pre-edge)" stroke-width="2">
+          <circle cx="232" cy="198" r="18"/><circle cx="372" cy="200" r="18"/><circle cx="262" cy="150" r="18"/><circle cx="338" cy="150" r="18"/><circle cx="300" cy="112" r="16"/>
+        </g>
+        <g fill="var(--glu)">
+          <circle cx="226" cy="194" r="2.6"/><circle cx="237" cy="203" r="2.6"/><circle cx="238" cy="191" r="2.6"/>
+          <circle cx="366" cy="196" r="2.6"/><circle cx="377" cy="205" r="2.6"/><circle cx="377" cy="193" r="2.6"/>
+          <circle cx="256" cy="146" r="2.6"/><circle cx="267" cy="155" r="2.6"/><circle cx="268" cy="143" r="2.6"/>
+          <circle cx="332" cy="146" r="2.6"/><circle cx="343" cy="155" r="2.6"/><circle cx="344" cy="143" r="2.6"/>
+          <circle cx="295" cy="110" r="2.6"/><circle cx="305" cy="116" r="2.6"/>
+        </g>
+        <!-- docked vesicle -->
+        <g id="vesDock">
+          <circle cx="300" cy="229" r="18" fill="none" stroke="var(--pre-edge)" stroke-width="2"/>
+          <circle cx="294" cy="225" r="2.6" fill="var(--glu)"/><circle cx="305" cy="233" r="2.6" fill="var(--glu)"/><circle cx="306" cy="222" r="2.6" fill="var(--glu)"/><circle cx="295" cy="235" r="2.6" fill="var(--glu)"/>
+        </g>
+        <text class="sm" x="324" y="226">docked vesicle</text>
+
+        <!-- postsynaptic receptors -->
+        <g><rect class="rec ampa" x="236" y="290" width="6" height="18" rx="2"/><rect class="rec ampa" x="248" y="290" width="6" height="18" rx="2"/><rect class="rgate ampa-gate" x="242" y="292" width="6" height="12"/></g>
+        <g><rect class="rec ampa" x="346" y="290" width="6" height="18" rx="2"/><rect class="rec ampa" x="358" y="290" width="6" height="18" rx="2"/><rect class="rgate ampa-gate" x="352" y="292" width="6" height="12"/></g>
+        <g><rect class="rec nmda" x="291" y="290" width="6" height="20" rx="2"/><rect class="rec nmda" x="303" y="290" width="6" height="20" rx="2"/><rect class="rgate nmda-gate" x="297" y="306" width="6" height="4"/><circle id="mg" cx="300" cy="300" r="4"/></g>
+        <text class="sm" x="224" y="326">AMPA</text><text class="sm" x="284" y="326">NMDA</text><text class="sm" x="342" y="326">AMPA</text>
+
+        <!-- voltage meter -->
+        <g id="meter">
+          <text class="sm" x="16" y="434">Postsynaptic</text><text class="sm" x="16" y="447">voltage</text>
+          <rect x="28" y="456" width="16" height="60" rx="3" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          <rect id="mFill" x="30" y="500" width="12" height="14" rx="2" fill="var(--na)"/>
+          <line x1="22" y1="474" x2="52" y2="474" stroke="var(--ink)" stroke-dasharray="3 2" stroke-width="1"/>
+          <text class="mono" x="56" y="478" fill="var(--muted)">−55 threshold</text>
+          <text id="mVal" class="mono" x="56" y="512">−70 mV</text>
+        </g>
+
+        <g id="fx"></g>
+      </svg>
+      <div class="legend" aria-label="Colour key">
+        <span><i style="background:var(--ap)"></i>Action potential</span>
+        <span><i style="background:var(--ca)"></i><span class="ion">Ca²⁺</span></span>
+        <span><i style="background:var(--glu)"></i>Glutamate</span>
+        <span><i style="background:var(--na)"></i><span class="ion">Na⁺</span></span>
+        <span><i style="background:var(--mg)"></i><span class="ion">Mg²⁺</span></span>
+        <span><i style="background:var(--dser)"></i>D-serine</span>
+        <span><i style="background:var(--gln)"></i>Glutamine</span>
+        <span><i style="background:var(--h)"></i><span class="ion">H⁺</span></span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="controls">
+        <button id="prev" type="button" aria-label="Previous step">← Back</button>
+        <button id="next" type="button" class="primary" aria-label="Next step">Next →</button>
+        <button id="play" type="button" aria-pressed="false">▶ Play all</button>
+        <div class="pills" id="pills" role="group" aria-label="Jump to step"></div>
+      </div>
+      <article class="card" aria-live="polite">
+        <div class="eyebrow"><span id="sNum"></span><span id="sLink"></span></div>
+        <h2 id="sTitle"></h2>
+        <div id="sBody"></div>
+        <p class="why" id="sWhy"></p>
+        <p class="meter-note" id="sMeter"></p>
+      </article>
+      <section class="card terms" aria-labelledby="termsH">
+        <h3 id="termsH">Difficult terms in this step</h3>
+        <div id="sTerms"></div>
+      </section>
+    </div>
+  </div>
+
+  <footer>A simplified teaching model: real terminals contain hundreds of vesicles and proteins, and one EPSP from a single synapse is usually far too small to reach threshold. Many inputs must summate (Lectures 4–5). Concentrations follow the Lecture 9 slide: Ca²⁺ ≈ 100 nM inside, ≈ 1 mM outside.</footer>
+</div>
+
+<script>
+(function () {
+  const svg = document.getElementById('syn');
+  const fx = document.getElementById('fx');
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  let anims = [];
+
+  function dot(color, r) {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('r', r || 3.4); c.setAttribute('cx', 0); c.setAttribute('cy', 0);
+    c.setAttribute('fill', 'var(--' + color + ')');
+    fx.appendChild(c); return c;
+  }
+  function run(el, pts, dur, delay, loop) {
+    const frames = pts.map(p => ({ transform: 'translate(' + p[0] + 'px,' + p[1] + 'px)' + (p[3] ? ' scale(' + p[3] + ')' : ''), opacity: p[2] === undefined ? 1 : p[2] }));
+    const opts = reduce ? { duration: 1, fill: 'forwards' } : { duration: dur, delay: delay || 0, iterations: loop === false ? 1 : Infinity, easing: 'ease-in-out', fill: 'both' };
+    const a = el.animate(frames, opts); anims.push(a); return a;
+  }
+  function clearFx() { anims.forEach(a => a.cancel()); anims = []; fx.innerHTML = ''; }
+  function setMeter(mv) {
+    const y = 516 - (mv + 80) / 40 * 60; // -80..-40 mapped into the bar
+    const f = document.getElementById('mFill');
+    f.setAttribute('y', Math.max(456, y)); f.setAttribute('height', 516 - 2 - Math.max(456, y));
+    document.getElementById('mVal').textContent = (mv < 0 ? '−' + Math.abs(mv) : mv) + ' mV';
+  }
+  function apPulse(times) {
+    const ap = document.getElementById('ap');
+    const a = ap.animate([{ transform: 'translateY(0px)', opacity: 0 }, { transform: 'translateY(60px)', opacity: .9 }, { transform: 'translateY(300px)', opacity: 0 }],
+      reduce ? { duration: 1, fill: 'forwards' } : { duration: 1700, iterations: times || Infinity, easing: 'ease-in' });
+    anims.push(a);
+  }
+  function ring(x, y, color) {
+    const c = dot(color, 6); c.setAttribute('fill', 'none'); c.setAttribute('stroke', 'var(--' + color + ')'); c.setAttribute('stroke-width', 2);
+    run(c, [[x, y, .9, .5], [x, y, 0, 2.4]], 1400, 0);
+  }
+  function caIn(n, toVesicle) {
+    for (let i = 0; i < n; i++) {
+      const ch = i % 2 ? 170 : 430, c = dot('ca', 3.2);
+      const end = toVesicle ? [rnd(280, 320), rnd(214, 244)] : [ch + rnd(-40, 40), rnd(200, 236)];
+      run(c, [[ch + rnd(-30, 30), rnd(262, 286), 0], [ch, 252, 1], end, [end[0], end[1], toVesicle ? 1 : 0]], 2400, i * 160);
+    }
+  }
+  function glu(n, spill) {
+    const targets = [[245, 288], [300, 288], [355, 288]];
+    for (let i = 0; i < n; i++) {
+      const c = dot('glu', 3);
+      if (spill && i % 4 === 3) run(c, [[300 + rnd(-6, 6), 250, 0], [300, 256], [440, rnd(262, 280)], [498, 270, 0]], 2600, i * 120);
+      else { const t = targets[i % 3]; run(c, [[300 + rnd(-6, 6), 250, 0], [300, 258], [t[0] + rnd(-6, 6), t[1] - rnd(0, 6)], [t[0], t[1], 0]], 2400, i * 120); }
+    }
+  }
+  function sitting() { [[245, 287], [355, 287], [300, 287]].forEach(p => { const c = dot('glu', 3); c.setAttribute('cx', p[0]); c.setAttribute('cy', p[1]); }); }
+  function naIn(n) {
+    for (let i = 0; i < n; i++) {
+      const x = i % 2 ? 245 : 355, c = dot('na', 3.2);
+      run(c, [[x + rnd(-25, 25), rnd(262, 282), 0], [x, 296], [x + rnd(-40, 40), rnd(330, 380)], [x + rnd(-50, 50), rnd(370, 410), 0]], 2200, i * 150);
+    }
+  }
+
+  const steps = [
+    { title: 'An action potential arrives at the terminal', link: 'Lectures 4–5',
+      body: '<p>A wave of <b>depolarisation</b>, the action potential, travels down the axon and reaches the <b>axon terminal</b>. The signal is still purely electrical: nothing has been released yet.</p>',
+      why: '<b>Why it matters:</b> the whole synapse is triggered by this voltage change. No action potential, no release.',
+      meter: -70,
+      terms: [['Action potential', 'The all-or-none electrical spike (about 1 ms) that travels along the axon. It starts at the axon hillock when the membrane reaches threshold (≈ −55 mV).'],
+              ['Depolarisation', 'The inside of the membrane becoming less negative (moving up from about −70 mV), mainly because positive ions such as Na⁺ flow in.'],
+              ['Axon terminal (presynaptic terminal)', 'The swollen end of the axon where it meets the next cell. It stores transmitter in vesicles.']],
+      scene() { apPulse(); } },
+    { title: 'Voltage-gated calcium channels open', link: 'Lecture 9',
+      body: '<p>The depolarisation changes the voltage across the terminal membrane. That opens <b>voltage-gated <span class="ion c-ca">Ca²⁺</span> channels</b>, which are clustered near the <b>active zone</b> where vesicles are released.</p>',
+      why: '<b>Why it matters:</b> this is the switch that turns an electrical signal into a chemical one.',
+      meter: -70, cls: ['ca-open'],
+      terms: [['Voltage-gated channel', 'An ion channel that is closed at rest and opens only when the membrane voltage changes enough. Its "gate" responds to electricity, not to a chemical.'],
+              ['Active zone', 'The small, specialised patch of presynaptic membrane where vesicles dock and release transmitter. Scaffold proteins such as Piccolo and Bassoon organise it.']],
+      scene() { apPulse(2); [170, 430].forEach(x => ring(x, 250, 'ca')); } },
+    { title: 'Calcium rushes into the terminal', link: 'Lecture 9',
+      body: '<p>Outside the cell <span class="ion c-ca">Ca²⁺</span> is about <b>1 mM</b>; inside it is only about <b>100 nM</b>, roughly a <b>10,000-fold</b> difference. So Ca²⁺ floods in quickly the moment the channels open.</p><p>Here Ca²⁺ acts as a <b>second messenger</b>: it carries the "action potential arrived" message into the terminal.</p>',
+      why: '<b>Why calcium?</b> Because resting Ca²⁺ is so low, a small influx is a big <i>relative</i> change ("high contrast"). It is also easy to pump back out, so the signal switches off fast.',
+      meter: -70, cls: ['ca-open'],
+      terms: [['Concentration gradient', 'A difference in concentration across a membrane. Ions move from high to low concentration when a channel opens, like water flowing downhill.'],
+              ['Second messenger', 'A signal inside the cell that relays a message received at the membrane. Examples: Ca²⁺, cAMP, IP₃.'],
+              ['nM and mM', 'Nanomolar (10⁻⁹ mol/L) and millimolar (10⁻³ mol/L). 1 mM is 10,000 times larger than 100 nM.']],
+      scene() { caIn(16, false); } },
+    { title: 'Calcium triggers vesicle fusion', link: 'Lecture 9',
+      body: '<p><span class="ion c-ca">Ca²⁺</span> binds <b>synaptotagmin</b>, a sensor on the <b>docked vesicle</b>. <b>SNARE proteins</b> (VAMP on the vesicle; syntaxin and SNAP-25 on the membrane) zip together, pulling the vesicle into the membrane until it opens like a peeled fruit.</p>',
+      why: '<b>Why it matters:</b> only vesicles already docked and primed at the active zone can release quickly. This step is called <b>exocytosis</b>.',
+      meter: -70, cls: ['ca-open', 'fused'],
+      terms: [['Synaptic vesicle', 'A tiny lipid-bilayer bubble packed with transmitter (here glutamate). Vesicles sit in pools: reserve, recycling and ready-to-release.'],
+              ['Synaptotagmin', 'The Ca²⁺ sensor on the vesicle. When Ca²⁺ binds, it triggers the final fusion step.'],
+              ['SNARE proteins', 'Proteins on the vesicle and on the cell membrane that wind together like a zip, forcing the two membranes to fuse.'],
+              ['Exocytosis', 'Release of a vesicle\'s contents by fusing it with the cell membrane.']],
+      scene() { caIn(10, true); const v = document.getElementById('vesDock'); if (!reduce) anims.push(v.animate([{ transform: 'translateY(0px)' }, { transform: 'translateY(10px)' }, { transform: 'translateY(0px)' }], { duration: 1800, iterations: Infinity })); glu(4, false); } },
+    { title: 'Glutamate diffuses across the cleft', link: 'Lectures 8–9',
+      body: '<p><span class="ion c-glu">Glutamate</span> spreads out in all directions, roughly in a sphere. Most crosses the narrow <b>synaptic cleft</b> to receptors on the postsynaptic spine, but some <b>spills over</b> toward the astrocyte and nearby synapses.</p>',
+      why: '<b>Why it matters:</b> diffusion is fast over 20 nm. Spillover is why astrocytes, autoreceptors and extrasynaptic receptors matter (Tripartite Synapse II).',
+      meter: -70, cls: ['ca-open', 'fused'],
+      terms: [['Synaptic cleft', 'The gap (about 20 nm) between presynaptic terminal and postsynaptic membrane. The neurons do not touch.'],
+              ['Diffusion', 'Random movement of molecules from high to low concentration. No energy needed, but it spreads in every direction.'],
+              ['Spillover', 'Transmitter escaping the cleft to reach the astrocyte, receptors outside the synapse, or neighbouring terminals.']],
+      scene() { glu(16, true); } },
+    { title: 'AMPA receptors open: the EPSP', link: 'Lectures 5 & 9',
+      body: '<p>Glutamate binds <b>AMPA receptors</b>. These are <b>ionotropic</b>: the receptor itself is a channel. It opens, <span class="ion c-na">Na⁺</span> flows in, and the spine <b>depolarises</b>. This small rise is an <b>EPSP</b>.</p>',
+      why: '<b>Why it matters:</b> the chemical signal has become electrical again. One EPSP is small; the neuron fires only if many EPSPs summate to threshold at the axon hillock.',
+      meter: -64, cls: ['ca-open', 'fused', 'ampa-open'],
+      terms: [['Ionotropic receptor', 'A receptor that is an ion channel. Binding the transmitter opens it directly, so the effect is fast (milliseconds).'],
+              ['AMPA receptor', 'A glutamate receptor built from four subunits (GluA1–4). Main job: fast Na⁺ entry. Receptors containing GluA2 let in little Ca²⁺.'],
+              ['EPSP', 'Excitatory postsynaptic potential: a small, graded depolarisation that moves the voltage toward threshold. Not an action potential.']],
+      scene() { sitting(); naIn(16); } },
+    { title: 'NMDA receptors: the coincidence detector', link: 'Lectures 4, 8 & 9',
+      body: '<p>The <b>NMDA receptor</b> opens only if three things happen together: glutamate binds, a co-agonist (<span class="ion c-dser">D-serine</span> or glycine, often supplied by the <b>astrocyte</b>) binds, and the membrane is already <b>depolarised</b> by AMPA receptors. Depolarisation pushes out the <span class="ion c-mg">Mg²⁺</span> plug, and <span class="ion c-ca">Ca²⁺</span> enters.</p>',
+      why: '<b>Why it matters:</b> it is a molecular AND gate (Lecture 4). The Ca²⁺ that enters is a second messenger that can strengthen the synapse: <b>long-term potentiation (LTP)</b>, a basis of learning.',
+      meter: -61, cls: ['ca-open', 'fused', 'ampa-open', 'nmda-open', 'mg-out'],
+      terms: [['NMDA receptor', 'A glutamate receptor (GluN1 + GluN2) that needs glutamate, a co-agonist and depolarisation before ions can pass.'],
+              ['Mg²⁺ block', 'A magnesium ion that sits in the NMDA channel at rest. Its positive charge repels incoming Na⁺ and Ca²⁺ until depolarisation expels it.'],
+              ['Co-agonist (D-serine)', 'A second molecule that must bind alongside glutamate. Astrocytes release D-serine, so they can turn NMDA receptors up or down.'],
+              ['Coincidence detection', 'Responding only when two events happen at the same time, here presynaptic release and postsynaptic depolarisation.'],
+              ['Long-term potentiation (LTP)', 'Lasting strengthening of a synapse after Ca²⁺ entry, e.g. by adding more AMPA receptors to the membrane.']],
+      scene() {
+        sitting(); naIn(8);
+        const d = dot('dser', 3.4); run(d, [[515, 312, 0], [470, 300], [312, 290], [306, 289, 0]], 2600, 0);
+        for (let i = 0; i < 8; i++) { const c = dot('ca', 3.2); run(c, [[300 + rnd(-10, 10), 266, 0], [300, 300], [300 + rnd(-45, 45), rnd(340, 400)], [300 + rnd(-50, 50), rnd(380, 420), 0]], 2400, 600 + i * 220); }
+      } },
+    { title: 'Clean-up and recycling', link: 'Lectures 8–9',
+      body: '<p>The signal must end quickly. <b>Astrocyte transporters (EAAT)</b> pull glutamate out of the cleft; inside the astrocyte it becomes <span class="ion c-gln">glutamine</span>, which returns to the neuron to be turned back into glutamate.</p><p>The vesicle membrane is pulled back in by <b>endocytosis</b>. A <b>V-ATPase</b> pumps <span class="ion">H⁺</span> into it, and that proton gradient powers refilling with glutamate. <span class="ion c-ca">Ca²⁺</span> is pumped back out.</p>',
+      why: '<b>Why it matters:</b> a signal left "on" loses its meaning, and excess glutamate is toxic (<b>excitotoxicity</b>). Every step here costs energy, which is why the brain uses about 20% of the body\'s energy.',
+      meter: -70, cls: [],
+      terms: [['Glutamate transporter (EAAT)', 'A protein in the astrocyte membrane that removes glutamate from the cleft, driven by the Na⁺ gradient.'],
+              ['Glutamate–glutamine cycle', 'Astrocytes convert glutamate to glutamine (enzyme: glutamine synthetase); neurons convert it back to glutamate for reuse.'],
+              ['Endocytosis', 'Pulling membrane back into the cell to make a new vesicle. Modes differ in speed: clathrin-mediated (10–30 s), kiss-and-run (1–2 s), ultrafast (~50 ms).'],
+              ['V-ATPase', 'An ATP-powered pump that fills vesicles with H⁺; the H⁺ gradient then drives glutamate loading.'],
+              ['Excitotoxicity', 'Damage or death of neurons caused by too much glutamate stimulation.']],
+      scene() {
+        for (let i = 0; i < 10; i++) { const c = dot('glu', 3); run(c, [[rnd(240, 380), rnd(262, 284), 1], [460, 270], [500, 270, 0]], 2400, i * 200); }
+        for (let i = 0; i < 4; i++) { const c = dot('gln', 3.4); run(c, [[540, 230, 0], [520, 205], [478, 180], [462, 176, 0]], 2600, 800 + i * 500); }
+        const v = dot('pre-edge', 9); v.setAttribute('fill', 'none'); v.setAttribute('stroke', 'var(--pre-edge)'); v.setAttribute('stroke-width', 2);
+        run(v, [[400, 252, 0, .4], [400, 238, 1, .9], [372, 200, 1, 1], [372, 200, 0, 1]], 3000, 0);
+        for (let i = 0; i < 6; i++) { const h = dot('h', 2.4); run(h, [[232 + rnd(-30, 30), 228, 0], [232 + rnd(-10, 10), 210], [232 + rnd(-6, 6), 198, 0]], 1800, i * 300); }
+        for (let i = 0; i < 6; i++) { const ch = i % 2 ? 170 : 430, c = dot('ca', 3); run(c, [[ch + rnd(-30, 30), 228, 1], [ch, 248], [ch + rnd(-20, 20), 276, 0]], 2000, i * 250); }
+      } }
+  ];
+
+  const pills = document.getElementById('pills');
+  steps.forEach((s, i) => {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = i + 1; b.title = s.title;
+    b.setAttribute('aria-label', 'Step ' + (i + 1) + ': ' + s.title);
+    b.addEventListener('click', () => { stopPlay(); go(i); });
+    pills.appendChild(b);
+  });
+
+  let cur = 0, timer = null;
+  function go(i) {
+    cur = (i + steps.length) % steps.length;
+    const s = steps[cur];
+    clearFx();
+    svg.setAttribute('class', (s.cls || []).join(' '));
+    setMeter(s.meter);
+    document.getElementById('sNum').textContent = 'Step ' + (cur + 1) + ' of ' + steps.length;
+    document.getElementById('sLink').textContent = s.link;
+    document.getElementById('sTitle').textContent = s.title;
+    document.getElementById('sBody').innerHTML = s.body;
+    document.getElementById('sWhy').innerHTML = s.why;
+    document.getElementById('sMeter').textContent = 'Postsynaptic voltage in this step: ' + (s.meter === -70 ? 'resting (−70 mV)' : '≈ ' + s.meter + ' mV (small EPSP; threshold is −55 mV)').replace('-', '−');
+    const t = document.getElementById('sTerms'); t.innerHTML = '';
+    s.terms.forEach(([n, d]) => { const el = document.createElement('details'); const sm = document.createElement('summary'); sm.textContent = n; const p = document.createElement('p'); p.textContent = d; el.append(sm, p); t.appendChild(el); });
+    [...pills.children].forEach((b, k) => b.toggleAttribute('aria-current', false) || (k === cur && b.setAttribute('aria-current', 'step')));
+    s.scene();
+  }
+  function stopPlay() { if (timer) { clearInterval(timer); timer = null; } const p = document.getElementById('play'); p.textContent = '▶ Play all'; p.setAttribute('aria-pressed', 'false'); }
+  document.getElementById('next').addEventListener('click', () => { stopPlay(); go(cur + 1); });
+  document.getElementById('prev').addEventListener('click', () => { stopPlay(); go(cur - 1); });
+  document.getElementById('play').addEventListener('click', e => {
+    if (timer) return stopPlay();
+    e.currentTarget.textContent = '❚❚ Pause'; e.currentTarget.setAttribute('aria-pressed', 'true');
+    go(cur); timer = setInterval(() => go(cur + 1), 8000);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.target.closest && e.target.closest('summary')) return;
+    if (e.key === 'ArrowRight') { stopPlay(); go(cur + 1); }
+    if (e.key === 'ArrowLeft') { stopPlay(); go(cur - 1); }
+  });
+  go(0);
+})();
+</script>
+
+</body></html>
